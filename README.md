@@ -1,86 +1,147 @@
-# MelaninCare AI – Skin Analysis Prototype
+# HAM10000 Representation-Aware Classification Study
 
-Developed by Chidinma Charity Igwe
+## Overview
 
+This repository documents an exploratory machine-learning study examining class-representation imbalance in the HAM10000 dermoscopic image dataset.
 
-## Project Overview
+The study evaluates how different training approaches affect performance across dominant and underrepresented lesion categories.
 
-MelaninCare AI is a prototype machine learning model designed to explore fairness and bias in dermatological AI systems, with a focus on improving skin condition analysis for melanin-rich populations.
+The experimental approaches include:
 
-This project demonstrates how AI models behave when trained on limited or imbalanced datasets and highlights the importance of inclusive data in healthcare AI.
+- Baseline convolutional neural network (CNN)
+- Inverse-frequency class weighting
+- MobileNetV2 transfer learning
+- MobileNetV2 combined with class weighting
+- Class-specific model evaluation
+- Confusion-matrix analysis
+- Precision, recall, F1-score, and macro-averaged evaluation metrics
 
+## Research Question
 
-## Objectives
+How does lesion-class representation imbalance affect image-classification performance, and how do class weighting and transfer learning alter performance across underrepresented lesion categories?
 
-- To explore bias in AI-based skin classification systems  
-- To develop a prototype model for skin condition detection  
-- To evaluate model performance using training and validation metrics  
-- To highlight the importance of inclusive datasets in AI  
+## Dataset
 
+The study uses the publicly available HAM10000 dataset:
 
-## Model Development
+**Human Against Machine with 10,000 training images**
 
-The model was developed using Python and deep learning techniques.
+The dataset contains 10,015 dermoscopic images representing seven lesion categories:
 
-Key steps included:
-- Data preprocessing  
-- Model training using transfer learning (MobileNetV2)  
-- Model evaluation using validation data  
+- akiec — Actinic keratoses and intraepithelial carcinoma
+- bcc — Basal cell carcinoma
+- bkl — Benign keratosis-like lesions
+- df — Dermatofibroma
+- mel — Melanoma
+- nv — Melanocytic nevi
+- vasc — Vascular lesions
 
+The dataset is highly imbalanced, with the `nv` category substantially more represented than several other lesion categories.
 
-## Results and Evaluation
+## Experimental Approaches
 
-### Training Accuracy
+### 1. Baseline CNN
 
-![Training Accuracy](training_accuracy.png)
+A baseline convolutional neural network was developed to establish an initial performance benchmark.
 
+Approximate results:
 
-### Validation Results
+- Validation accuracy: 0.57
+- Macro F1-score: 0.15
 
-![Validation Results](validation_result.png)
+Class-level evaluation showed weak recall for several underrepresented lesion categories.
 
+### 2. Class-Weighted CNN
 
-### Model Architecture
+Inverse-frequency class weighting was applied to increase the influence of underrepresented categories during model training.
 
-![Model Architecture](model_architecture.png)
+Approximate results:
 
+- Validation accuracy: 0.43
+- Macro F1-score: 0.30
 
-## Key Insight
+The model improved recall for several underrepresented categories while reducing aggregate accuracy.
 
-The model demonstrates learning capability; however, performance is influenced by dataset limitations. This highlights the challenge of bias and underrepresentation in dermatology datasets, particularly for melanin-rich skin tones.
+### 3. MobileNetV2 Transfer Learning
 
+MobileNetV2 pretrained on ImageNet was used as a transfer-learning base.
 
-## Tools and Technologies
+Approximate results:
 
-- Python  
-- TensorFlow / Keras  
-- Google Colab  
-- GitHub  
+- Validation accuracy: 0.75
+- Macro F1-score: 0.39
 
+This approach achieved the strongest aggregate accuracy, although class-imbalance effects remained.
 
-## Significance
+### 4. MobileNetV2 + Class Weighting
 
-This project contributes to:
+A hybrid experiment combined transfer learning with inverse-frequency class weighting.
 
-- AI fairness in healthcare  
-- Understanding dataset bias  
-- Building inclusive machine learning systems  
+Approximate results:
 
+- Validation accuracy: 0.59
+- Macro F1-score: 0.43
 
-## Future Improvements
+This approach produced the strongest macro F1-score among the evaluated models and improved recall for several underrepresented lesion categories.
 
-- Improve dataset diversity  
-- Increase model accuracy  
-- Deploy as a web or mobile application  
-- Integrate real-world dermatological data  
+## Comparative Summary
 
+| Model | Accuracy | Macro F1 | Underrepresented-Class Recall Profile |
+|---|---:|---:|---|
+| Baseline CNN | 0.57 | 0.15 | Very weak |
+| Weighted CNN | 0.43 | 0.30 | Substantially improved |
+| MobileNetV2 Transfer Learning | 0.75 | 0.39 | Mixed; improved for some classes |
+| MobileNetV2 + Class Weighting | 0.59 | 0.43 | Stronger across several underrepresented classes |
 
-##  Author
+## Important Scope and Limitations
 
-Chidinma Charity Igwe  
-Data Analyst | AI Enthusiast | Healthcare Innovation Advocate  
+This repository examines **lesion-class representation imbalance** within the HAM10000 dataset.
 
+It does not establish:
 
-## Disclaimer
+- demographic fairness
+- racial or ethnic fairness
+- skin-tone fairness
+- equivalent performance across demographic groups
+- clinical effectiveness
+- diagnostic suitability
+- medical-device functionality
+- regulatory approval or certification
 
-This project is for educational and research purposes only and is not intended for medical diagnosis.
+The models are experimental and are not intended for medical diagnosis, treatment decisions, clinical assessment, or patient care.
+
+## Relationship to MelaninCare AI and MelanoScan AI
+
+This HAM10000 experiment is **separate from MelaninCare AI and MelanoScan AI**.
+
+The experimental models in this repository:
+
+- do not power MelaninCare AI;
+- do not power MelanoScan AI;
+- are not validation models for either consumer-facing concept; and
+- should not be interpreted as establishing the performance of either system.
+
+MelaninCare AI is a separate structured-input, non-clinical consumer education and cosmetic decision-support prototype.
+
+MelanoScan AI is a separate planning-stage concept. Any potential future visual-reference functionality remains conceptual and has not been technically implemented or validated.
+
+## Technical White Paper
+
+This repository supports the technical white paper:
+
+**Addressing Representation Imbalance in Dermatological Image Classification: A Representation-Aware Transfer Learning Study**
+
+Author: **Chidinma Charity Igwe**
+
+## Intended Use
+
+This repository is provided for technical, educational, research, and portfolio documentation purposes only.
+
+It is not intended for clinical or diagnostic use.
+
+## Dataset Reference
+
+Tschandl, P., Rosendahl, C., & Kittler, H. (2018).  
+*The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions.*  
+Scientific Data, 5, 180161.  
+https://doi.org/10.1038/sdata.2018.161
